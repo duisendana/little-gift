@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAAZ.EXE 🩵</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #050b18;
+  --panel: #0c1930;
+  --blue: #8be9ff;
+  --light: #d8f8ff;
+  --muted: #8ba8c8;
+}
+
+body {
+  background: var(--bg);
+  color: var(--light);
+  font-family: "Courier New", monospace;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 0%, #14335c 0%, transparent 65%);
+  z-index: -1;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #234365;
+  padding-bottom: 14px;
+  color: var(--blue);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.status {
+  color: #7bffbf;
+}
+
+.screen {
+  display: none;
+  flex: 1;
+  width: 100%;
+  max-width: 560px;
+  margin: auto;
+  padding: 28px 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  animation: appear .35s ease;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.screen::-webkit-scrollbar {
+  display: none;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pixel {
+  color: var(--blue);
+  text-shadow: 0 0 12px #43cfff;
+}
+
+.heart {
+  font-size: 65px;
+  margin-bottom: 25px;
+  color: var(--blue);
+  text-shadow: 0 0 15px #42cfff;
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+h1 {
+  font-size: clamp(27px, 7vw, 43px);
+  line-height: 1.3;
+  margin-bottom: 18px;
+  overflow-wrap: anywhere;
+}
+
+h2 {
+  color: var(--blue);
+  font-size: 21px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+p {
+  color: #b9cde5;
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+
+.small {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.panel {
+  width: 100%;
+  padding: 22px 18px;
+  background: rgba(12, 25, 48, .88);
+  border: 1px solid #24466c;
+  border-radius: 8px;
+  box-shadow: 0 0 24px #0b244233;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.btn {
+  font-family: inherit;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 12px;
+  padding: 15px 20px;
+  border: 1px solid var(--blue);
+  background: transparent;
+  color: var(--blue);
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+  transition: .2s;
+}
+
+.btn:hover {
+  background: #14344f;
+  box-shadow: 0 0 15px #43cfff55;
+}
+
+.btn.primary {
+  background: var(--blue);
+  color: #06111f;
+}
+
+.btn.primary:hover {
+  background: white;
+}
+
+input {
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+  background: #071224;
+  color: white;
+  border: 1px solid #345879;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 16px;
+  text-align: center;
+  outline: none;
+  margin: 8px 0;
+}
+
+input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 12px #43cfff44;
+}
+
+.error {
+  min-height: 24px;
+  color: #ff9cae;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.calendar {
+  width: 100%;
+  max-width: 320px;
+  background: #0b172b;
+  border: 1px solid #2a4b6d;
+  padding: 18px;
+  border-radius: 8px;
+  margin: 10px 0 22px;
+}
+
+.month {
+  color: var(--blue);
+  margin-bottom: 18px;
+  font-size: 16px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.day {
+  padding: 8px 0;
+  font-size: 12px;
+  color: #a7bad1;
+}
+
+.day.special {
+  background: var(--blue);
+  color: #071224;
+  border-radius: 4px;
+  font-weight: bold;
+  box-shadow: 0 0 12px #43cfff66;
+}
+
+.paper {
+  width: 100%;
+  padding: 22px 18px;
+  border: 1px solid #294969;
+  background: #0b172b;
+  border-radius: 8px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.paper p {
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.paper p:last-child {
+  margin-bottom: 0;
+}
+
+.footer {
+  text-align: center;
+  color: #456482;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding-top: 12px;
+}
+
+@media (max-height: 700px) {
+  .app {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .screen {
+    padding: 18px 0;
+  }
+
+  .heart {
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+
+  .panel, .paper {
+    padding: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <span>MAAZ.EXE</span>
+    <span class="status">● ONLINE</span>
+  </header>
+
+  <!-- SCREEN 1: WELCOME -->
+  <section class="screen active" id="welcome">
+    <div class="heart">♡</div>
+    <p class="small">A LITTLE WORLD MADE FOR YOU</p>
+    <h1 class="pixel">HELLO,<br>UNCLE MAAZ</h1>
+    <p>
+      A tiny internet world, made with lots of love
+      and a little bit of boredom hahaha.
+    </p>
+    <button class="btn primary" onclick="showScreen('code')">
+      ENTER MY WORLD →
+    </button>
+    <p class="small" style="margin-top:20px">
+      [ PRESS TO START ]
+    </p>
+  </section>
+
+  <!-- SCREEN 2: SECRET CODE -->
+  <section class="screen" id="code">
+    <div class="heart">♡</div>
+    <p class="small">LEVEL 01 / SECURITY CHECK</p>
+    <h2>One little secret...</h2>
+    <p>
+      Enter the special date that started
+      our little internet story.
+    </p>
+
+    <input id="secretCode"
+      type="password"
+      inputmode="numeric"
+      placeholder="Enter secret code"
+      maxlength="10"
+      autocomplete="off">
+
+    <button class="btn primary" onclick="unlock()">
+      UNLOCK →
+    </button>
+
+    <div class="error" id="codeError"></div>
+    <button class="btn" onclick="showScreen('welcome')">
+      ← GO BACK
+    </button>
+  </section>
+
+  <!-- SCREEN 3: DATE -->
+  <section class="screen" id="date">
+    <p class="small">LEVEL 02 / A SPECIAL DAY</p>
+    <h2>The beginning of us ♡</h2>
+
+    <div class="calendar">
+      <div class="month">FEBRUARY 2026</div>
+      <div class="days">
+        <div class="day">M</div>
+        <div class="day">T</div>
+        <div class="day">W</div>
+        <div class="day">T</div>
+        <div class="day">F</div>
+        <div class="day">S</div>
+        <div class="day">S</div>
+
+        <div class="day"> </div>
+        <div class="day"> </div>
+        <div class="day"> </div>
+        <div class="day"> </div>
+        <div class="day"> </div>
+        <div class="day"> </div>
+        <div class="day">1</div>
+
+        <div class="day">2</div>
+        <div class="day">3</div>
+        <div class="day">4</div>
+        <div class="day">5</div>
+        <div class="day">6</div>
+        <div class="day">7</div>
+        <div class="day">8</div>
+
+        <div class="day">9</div>
+        <div class="day">10</div>
+        <div class="day">11</div>
+        <div class="day">12</div>
+        <div class="day">13</div>
+        <div class="day">14</div>
+        <div class="day">15</div>
+
+        <div class="day">16</div>
+        <div class="day">17</div>
+        <div class="day">18</div>
+        <div class="day">19</div>
+        <div class="day">20</div>
+        <div class="day">21</div>
+        <div class="day">22</div>
+
+        <div class="day special">23</div>
+        <div class="day">24</div>
+        <div class="day">25</div>
+        <div class="day">26</div>
+        <div class="day">27</div>
+        <div class="day">28</div>
+      </div>
+    </div>
+
+    <p>
+      <span class="pixel">23 February</span><br>
+      The day our little internet story began. ♡
+    </p>
+
+    <button class="btn primary" onclick="showScreen('memory')">
+      NEXT MEMORY →
+    </button>
+  </section>
+
+  <!-- SCREEN 4: MEMORY -->
+  <section class="screen" id="memory">
+    <p class="small">LEVEL 03 / A LITTLE MEMORY</p>
+    <h2>Something I remember ♡</h2>
+
+    <div class="paper">
+      <p>
+        You know sometimes the smallest moments stay
+        in your memory even if the other person
+        doesn't really think much about them.
+      </p>
+
+      <p>
+        I still remember the first time you called me
+        "kid" hahaha and now you call me your sweetest
+        and cute kid every day. I can't even explain
+        how much I appreciate it.
+      </p>
+
+      <p>
+        Maybe they're just simple words for you but
+        they mean a lot to me. Hearing them from you
+        always makes me smile.
+      </p>
+
+      <p>
+        I'm really glad we met on February 23.
+        Like who would've thought that a random
+        internet meeting would become something so
+        special to me hahaha. I really love our little
+        moments and conversations.
+      </p>
+
+      <p>
+        I just wanted to keep this little memory here
+        because it's about you. Thank you for bringing
+        so much warmth into my days and for being
+        yourself cute uncle ♡
+      </p>
+    </div>
+
+    <button class="btn primary" onclick="showScreen('puzzle')">
+      CONTINUE →
+    </button>
+  </section>
+
+  <!-- SCREEN 5: PUZZLE -->
+  <section class="screen" id="puzzle">
+    <div class="heart">♡</div>
+    <p class="small">LEVEL 04 / MINI CHALLENGE</p>
+    <h2>One last little puzzle!</h2>
+
+    <div class="panel" style="text-align:center">
+      <p style="font-size:20px;color:#8be9ff">
+        (12 ÷ 3) + (5 × 2) − 3 = ?
+      </p>
+      <p class="small">Solve it to unlock the next page.</p>
+    </div>
+
+    <input id="mathAnswer"
+      type="number"
+      placeholder="Your answer"
+      inputmode="numeric">
+
+    <button class="btn primary" onclick="checkAnswer()">
+      CHECK ANSWER →
+    </button>
+
+    <div class="error" id="puzzleError"></div>
+  </section>
+
+  <!-- SCREEN 6: UNLOCKED -->
+  <section class="screen" id="unlocked">
+    <div class="heart">♥</div>
+    <p class="small">ACCESS GRANTED</p>
+    <h1 class="pixel">UNLOCKED!</h1>
+    <p>
+      Yayyy, you did it, uncle hahaha!
+      There's one more thing waiting for you.
+    </p>
+
+    <button class="btn primary" onclick="showScreen('letter')">
+      OPEN YOUR LETTER ♡
+    </button>
+  </section>
+
+  <!-- SCREEN 7: LETTER -->
+  <section class="screen" id="letter">
+    <p class="small">FINAL LEVEL / A MESSAGE FOR YOU</p>
+    <h2>Dear cute uncle 🩵</h2>
+
+    <div class="paper">
+      <p>
+        I don't even know what to write hahaha
+        I just wanted to make you happy.
+      </p>
+
+      <p>
+        You're a very very very goooood person
+        and ofc the sweeeetest uncle hahaha.
+      </p>
+
+      <p>
+        Thank you for everything. Thank you for making
+        my mood better every day and for always
+        supporting and understanding me.
+      </p>
+
+      <p>
+        Uncle yk what? You're the first person I've
+        talked to every single day for 8 months
+        hahahaha and honestly I'm so glad I met you.
+        I really hope that one day we'll meet in real
+        life and stay friends forever.
+      </p>
+
+      <p>
+        I hope you liked this hahaha I was bored and
+        wanted to make you happy so I made this for you.
+      </p>
+
+      <p>
+        Thank you for everything cute uncle 🫶🏻🩵
+      </p>
+    </div>
+
+    <button class="btn primary" onclick="showScreen('ending')">
+      ONE LAST THING →
+    </button>
+  </section>
+
+  <!-- SCREEN 8: ENDING -->
+  <section class="screen" id="ending">
+    <div class="heart">♡</div>
+    <p class="small">SYSTEM MESSAGE / COMPLETE</p>
+    <h1 class="pixel">THANK YOU,<br>MAAZ.</h1>
+
+    <p>
+      YOU'VE REACHED THE END of this little world.
+      Thank you for being here, cute uncle. 🩵
+    </p>
+
+    <p class="pixel">END OF GAME ♡</p>
+
+    <button class="btn" onclick="showScreen('welcome')">
+      ↻ PLAY AGAIN
+    </button>
+  </section>
+
+  <footer class="footer">MADE WITH ♡ JUST FOR YOU</footer>
+</div>
+
+<script>
+function showScreen(screenId) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  const target = document.getElementById(screenId);
+
+  if (target) {
+    target.classList.add("active");
+  }
+
+  window.scrollTo(0, 0);
+}
+
+function unlock() {
+  const input = document.getElementById("secretCode");
+  const error = document.getElementById("codeError");
+
+  if (input.value.trim() === "2302") {
+    error.textContent = "";
+    input.value = "";
+    showScreen("date");
+  } else {
+    error.textContent = "Wrong code! Try again, uncle ♡";
+    input.value = "";
+    input.focus();
+  }
+}
+
+function checkAnswer() {
+  const input = document.getElementById("mathAnswer");
+  const error = document.getElementById("puzzleError");
+
+  if (input.value.trim() === "11") {
+    error.textContent = "";
+    input.value = "";
+    showScreen("unlocked");
+  } else {
+    error.textContent = "Not quite! Try again 🩵";
+    input.value = "";
+    input.focus();
+  }
+}
+
+document.getElementById("secretCode")
+  .addEventListener("keydown", function(event) {
+    if (event.key === "Enter") unlock();
+  });
+
+document.getElementById("mathAnswer")
+  .addEventListener("keydown", function(event) {
+    if (event.key === "Enter") checkAnswer();
+  });
+</script>
+
+</body>
+</html>

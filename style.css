@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
+
+:root {
+  --bg: #020817;
+  --panel: #06152d;
+  --blue: #168cff;
+  --cyan: #71d9ff;
+  --ice: #c5edff;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 30%, #0b2b55, transparent 65%),
+    #020817;
+  color: var(--ice);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(#9be5ff 1px, transparent 1px),
+    radial-gradient(#168cff 1px, transparent 1px);
+  background-size: 57px 57px, 91px 91px;
+  opacity: .28;
+}
+
+.app {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.topbar {
+  height: 36px;
+  min-height: 36px;
+  background: #07162e;
+  border-bottom: 1px solid #168cff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 13px;
+  color: var(--cyan);
+  font-size: 12px;
+  letter-spacing: 1px;
+  box-shadow: 0 0 15px #168cff20;
+}
+
+.screen {
+  display: none !important;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  padding: 22px 18px;
+  overflow: hidden !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+}
+
+.screen.active {
+  display: flex !important;
+  animation: appear .4s ease;
+}
+
+h1, h2 {
+  font-family: 'VT323', monospace;
+  font-weight: normal;
+  color: var(--ice);
+  text-shadow: 0 0 9px #168cff, 0 0 24px #168cff65;
+}
+
+h1 {
+  font-size: clamp(48px, 12vw, 82px);
+  letter-spacing: 3px;
+  line-height: .95;
+  margin: 10px 0;
+}
+
+h2 {
+  font-size: clamp(28px, 7vw, 42px);
+  line-height: 1;
+  margin: 10px 0 17px;
+}
+
+.subtitle {
+  font-size: clamp(12px, 3vw, 15px);
+  line-height: 1.7;
+  max-width: 440px;
+}
+
+.heart {
+  color: #8ae2ff;
+  font-size: 45px;
+  margin: 13px 0 20px;
+  text-shadow: 0 0 8px #168cff, 0 0 25px #168cff;
+  animation: heartbeat 1.8s infinite;
+}
+
+.btn {
+  min-height: 44px;
+  min-width: 130px;
+  padding: 11px 20px;
+  border: 1px solid var(--blue);
+  background: #071b38;
+  color: var(--ice);
+  font: 13px 'Share Tech Mono', monospace;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  box-shadow: inset 0 0 12px #168cff12;
+  transition: .2s;
+}
+
+.btn:hover, .btn:active {
+  background: #087de0;
+  color: white;
+  box-shadow: 0 0 20px #168cff70;
+}
+
+.primary {
+  background: #087de0;
+  color: white;
+}
+
+.field {
+  width: min(340px, 100%);
+  height: 45px;
+  padding: 10px;
+  background: #020a18;
+  color: white;
+  border: 1px solid var(--blue);
+  outline: none;
+  text-align: center;
+  font: 16px 'Share Tech Mono', monospace;
+  border-radius: 0;
+}
+
+.field:focus {
+  box-shadow: 0 0 16px #168cff55;
+  border-color: var(--cyan);
+}
+
+.hint {
+  color: #68c8f5;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.error {
+  color: #ff9fba;
+  font-size: 12px;
+  min-height: 16px;
+}
+
+.moon {
+  position: absolute;
+  top: 6%;
+  right: 8%;
+  color: #c6edff;
+  font-size: 30px;
+  text-shadow: 0 0 15px #168cff;
+}
+
+.label {
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.content {
+  width: min(620px, 100%);
+  max-height: calc(100% - 65px);
+  padding: clamp(12px, 3vw, 24px);
+  border: 1px solid #168cff;
+  background: #030d20;
+  color: #c5edff;
+  text-align: left;
+  font-size: clamp(10px, 2.6vw, 13px);
+  line-height: 1.55;
+  white-space: pre-line;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  box-shadow: 0 0 25px #168cff16;
+}
+
+.paper {
+  width: min(620px, 100%);
+  max-height: calc(100% - 65px);
+  padding: clamp(12px, 3.5vw, 25px);
+  background: #bde8ff;
+  color: #06152b;
+  border: 1px solid #e1f6ff;
+  box-shadow: 0 0 25px #168cff30;
+  text-align: left;
+  font-size: clamp(10px, 2.7vw, 13px);
+  line-height: 1.55;
+  white-space: pre-line;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.calendar {
+  width: min(320px, 100%);
+  padding: 12px;
+  background: #030c20;
+  border: 1px solid var(--blue);
+  box-shadow: 0 0 18px #168cff18;
+}
+
+.month {
+  padding: 8px;
+  margin-bottom: 7px;
+  border-bottom: 1px solid #168cff65;
+  color: var(--cyan);
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+  font-size: 11px;
+}
+
+.days span {
+  padding: 7px 0;
+}
+
+.weekday {
+  color: #66b9e9;
+}
+
+.special {
+  background: #087de0;
+  color: white;
+  box-shadow: 0 0 12px #168cff;
+}
+
+.date-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.date-note {
+  max-width: 185px;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.nav {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  max-width: 95%;
+  color: var(--cyan);
+  font-size: 10px;
+}
+
+.nav button {
+  border: 0;
+  background: transparent;
+  color: #8ae2ff;
+  font-size: 31px;
+  padding: 4px 7px;
+  text-shadow: 0 0 14px #168cff;
+  cursor: pointer;
+}
+
+.city {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 38px;
+  opacity: .28;
+  border-top: 1px solid #168cff;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 16px,
+    #168cff 17px 19px,
+    transparent 20px 30px
+  );
+  pointer-events: none;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 9px #168cff);
+  }
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-height: 650px) {
+  .screen { padding: 8px 12px 42px; }
+  h1 { font-size: 45px; }
+  h2 { font-size: 26px; margin: 5px 0 8px; }
+  .heart { font-size: 30px; margin: 5px 0 10px; }
+  .content, .paper {
+    padding: 9px;
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  .days span { padding: 4px 0; }
+  .calendar { padding: 7px; }
+}
+
+@media (max-width: 380px) {
+  .screen { padding-left: 11px; padding-right: 11px; }
+  .content, .paper { font-size: 10px; line-height: 1.4; }
+}
